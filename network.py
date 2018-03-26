@@ -82,7 +82,8 @@ class Network(object):
             monitor_evaluation_cost=False,
             monitor_evaluation_accuracy=False,
             monitor_training_cost=False,
-            monitor_training_accuracy=False):
+            monitor_training_accuracy=False,
+            plot=True):
 
         if evaluation_data:
             n_data = len(evaluation_data)
@@ -111,8 +112,13 @@ class Network(object):
                 print ("Cost on evaluation data: {0}".format(cost))
             if monitor_evaluation_accuracy:
                 accuracy = self.accuracy(evaluation_data)
-                evaluation_accuracy.append(accuracy)
+                evaluation_accuracy.append(accuracy/n_data)
                 print ("Accuracy on evaluation data: {0} / {1}".format(self.accuracy(evaluation_data), n_data))
+        if(plot):      
+            plt.plot(evaluation_accuracy)
+            plt.ylabel("Accuracy")
+            plt.xlabel("Epoch")
+            plt.show()
         return evaluation_cost, evaluation_accuracy, training_cost, training_accuracy
 
     def update_mini_batch(self, mini_batch, eta, lmbda, n):
