@@ -27,8 +27,6 @@ def read(dataset = "training", path = "Data"):
     with open(fname_lbl, 'rb') as flbl:
         magic, num = struct.unpack(">II", flbl.read(8))
         lbl = np.fromfile(flbl, dtype=np.int8)
-        if(dataset is "training"): #convert the label to a 10x1 vector
-            lbl = list(map(vectorized_result, lbl))
 
     with open(fname_img, 'rb') as fimg:
         magic, num, rows, cols = struct.unpack(">IIII", fimg.read(16))
@@ -42,16 +40,7 @@ def read(dataset = "training", path = "Data"):
         yield get_img(i)
 
 def adjust(k):
-    return k / 256
-
-def vectorized_result(j):
-    """Return a 10-dimensional unit vector with a 1.0 in the jth
-    position and zeroes elsewhere.  This is used to convert a digit
-    (0...9) into a corresponding desired output from the neural
-    network."""
-    e = np.zeros((10, 1))
-    e[j] = 1.0
-    return e
+    return 2 * k / 256
 
 def show(image):
     """
